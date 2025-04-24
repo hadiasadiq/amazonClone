@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import API from "../api/axios";
+import API, { authAPI } from "../api/axios";
 import '../styles/SignUp.css'
 import { useAuth } from "../context/AuthContext";
 
@@ -9,7 +9,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
-
+  const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -17,20 +17,15 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    // if (password !== confirmPassword) {
-    //   setError("Passwords do not match");
-    //   return;
-    // }
+    if (password !== confirmpassword) {
+      setError("Passwords do not match");
+      return;
+    }
 
-  //  if(phone.length !== 11 ){
-  //     setError("Phone Numbe must have to be 11 Digits...");
-  //     return;
-  //   }
-
-   setLoading(true);
+    setLoading(true);
     // send data to backend
     try {
-      const response = await API.post("/register", { name, email,  password,confirmpassword, }); // change 0
+      const response = await authAPI.register({ name, lastName, email, password, confirmpassword });
       if (response.data.success) {
         // login(response.data.user);
         navigate("/login");
@@ -56,7 +51,13 @@ function Register() {
             onChange={(e) => setName(e.target.value)}
             required
           />
-
+          <input
+            type="text"
+            placeholder="last name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
           <input
             type="email"
             placeholder="Email"
@@ -64,7 +65,6 @@ function Register() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          
 
           <input
             type="password"
@@ -74,8 +74,8 @@ function Register() {
             required
           />
           <input
-            type="confirmpassword"
-            placeholder="ConfirmPassword"
+            type="password"
+            placeholder="Confirm Password"
             value={confirmpassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required

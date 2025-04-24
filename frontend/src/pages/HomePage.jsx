@@ -1,23 +1,84 @@
-import { useState } from "react"
+"use client"
+
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import Carousel from "../components/Carousel"
 import ProductCard from "../components/ProductCard"
-import CategoryCard from "../components/CategoryCard"
-import { products, categories, carouselData } from "../data/products"
+import { productAPI, categoryAPI } from "../api/axios"
 import "../styles/home-page.css"
 
 function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [products, setProducts] = useState([])
+  const [categories, setCategories] = useState([])
+  const [carouselData, setCarouselData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+        const [productsRes, categoriesRes] = await Promise.all([
+          productAPI.getAllProducts(),
+          categoryAPI.getAllCategories(),
+        ])
+
+        setProducts(productsRes.data.products)
+        setCategories(categoriesRes.data.categories)
+
+        // Set carousel data
+        setCarouselData([
+          {
+            id: 1,
+            title: "Summer Collection",
+            subtitle: "50% Off Selected Items",
+            image: "/image/banners/newcollection.webp",
+            link: "/products?category=clothing",
+          },
+          {
+            id: 2,
+            title: "New Electronics",
+            subtitle: "Latest Gadgets & Accessories",
+            image: "/image/banners/electronics.jfif",
+            link: "/products?category=electronics",
+          },
+          {
+            id: 3,
+            title: "Home Essentials",
+            subtitle: "Create Your Perfect Space",
+            image: "/image/banners/homeessential.jfif",
+            link: "/products?category=home",
+          },
+        ])
+      } catch (err) {
+        setError("Failed to load data")
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   // Filter products based on selected category
   const filteredProducts = selectedCategory
     ? products.filter((product) => product.category === selectedCategory)
-    : products;
+    : products
+
+  if (loading) {
+    return <div className="loading">Loading...</div>
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>
+  }
 
   return (
     <div className="home-page">
       <section className="hero-section">
-        <Carousel slides={carouselData} />  {/* Carosel Data */}  
+        <Carousel slides={carouselData} />
       </section>
 
       <section className="featured-products section">
@@ -30,9 +91,11 @@ function HomePage() {
           </div>
 
           <div className="products-grid">
-            {products.filter((product) => product.featured).map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            {products
+              .filter((product) => product.featured)
+              .map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
           </div>
         </div>
       </section>
@@ -42,7 +105,10 @@ function HomePage() {
         <section className="section">
           <h2>Categories</h2>
           <div className="categories-grid">
-            <button className={`category-button ${!selectedCategory ? "active" : ""}`} onClick={() => setSelectedCategory(null)}>
+            <button
+              className={`category-button ${!selectedCategory ? "active" : ""}`}
+              onClick={() => setSelectedCategory(null)}
+            >
               Show All
             </button>
             {categories.map((category) => (
@@ -62,9 +128,7 @@ function HomePage() {
           <h2>Products</h2>
           <div className="products-grid">
             {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))
+              filteredProducts.map((product) => <ProductCard key={product.id} product={product} />)
             ) : (
               <p>No products found in this category.</p>
             )}

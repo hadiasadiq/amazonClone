@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import API from "../api/axios";
+import API, { authAPI } from "../api/axios";
 import "../styles/login.css";
 import { useAuth } from "../context/AuthContext";
 
@@ -18,7 +18,7 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await API.post("/login", { email, password });
+      const response = await authAPI.login({ email, password });
       console.log(response);
       if (response.data.success) {
         login(response.data.user);

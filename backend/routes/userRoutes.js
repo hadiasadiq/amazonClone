@@ -4,7 +4,7 @@ const User = require("../models/User");
 
 // Register a new user
 router.post("/register", async (req, res) => {
-  const { name, email, password,  confirmpassword, } = req.body; //change 1
+  const { name, lastName, email, password,  confirmpassword, } = req.body; //change 1
   try {
     let user = await User.findOne({ email });
     if (user)
@@ -15,7 +15,7 @@ router.post("/register", async (req, res) => {
 
     // new user create machanism
     
-    user = new User({ name, email, password ,confirmpassword, }); // change 2
+    user = new User({ name, lastName, email, password ,confirmpassword, }); // change 2
     await user.save();
     res
       .status(201)

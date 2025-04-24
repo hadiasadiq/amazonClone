@@ -17,11 +17,15 @@ app.use(express.json());
 app.use(cors(corsOptions));
 
 mongoose
-  .connect(`${process.env.MONGO_URI}`)
+  .connect(`mongodb+srv://hello:hello123@restaurant.8j8yw.mongodb.net/amazon`)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
 app.use("/api/auth", require("./routes/userRoutes"));
+app.use("/api/admin", require("./routes/adminRoutes"));
+app.use("/api", require("./routes/productRoutes"));
+// Seed initial data
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
