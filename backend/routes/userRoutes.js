@@ -4,7 +4,7 @@ const User = require("../models/User");
 
 // Register a new user
 router.post("/register", async (req, res) => {
-  const { name, lastName, email, password,  confirmpassword, } = req.body; //change 1
+  const { name, lastName, email, password, confirmpassword } = req.body; //change 1
   try {
     let user = await User.findOne({ email });
     if (user)
@@ -13,7 +13,7 @@ router.post("/register", async (req, res) => {
         .status(400)
         .json({ message: "User already exists", code: 403 });
 
-    // new user create machanism
+    // new user create mechanism
     
     user = new User({ name, lastName, email, password ,confirmpassword, }); // change 2
     await user.save();
