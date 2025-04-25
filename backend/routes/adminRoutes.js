@@ -42,7 +42,7 @@ router.get("/products", async (req, res) => {
 // Create a product
 router.post("/products", async (req, res) => {
   try {
-    const { name, price, description, category, featured, images } = req.body
+    const { name, price, description, category, size, featured, images } = req.body // change 2
 
     // Generate a unique ID
     const lastProduct = await Product.findOne().sort({ id: -1 })
@@ -54,6 +54,7 @@ router.post("/products", async (req, res) => {
       price,
       description,
       category,
+      size, // change 2
       featured: featured || false,
       images: images || ["/placeholder.svg"],
       rating: 0,

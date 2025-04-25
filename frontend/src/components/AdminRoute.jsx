@@ -3,7 +3,7 @@
 import { Navigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 
-function AdminRoute({ children }) {
+function AdminProtectedRoutes({ children }) {
   const { user } = useAuth()
 
   if (!user) {
@@ -17,4 +17,4 @@ function AdminRoute({ children }) {
   return children
 }
 
-export default AdminRoute
+export default AdminProtectedRoutes
