@@ -221,8 +221,8 @@ router.put("/users/:id/toggle-admin", async (req, res) => {
       success: true,
     })
   } catch (err) {
+    console.error(err) // Log the error for debugging
     res.status(500).json({ message: "Server Error", success: false })
   }
 })
-
 module.exports = router

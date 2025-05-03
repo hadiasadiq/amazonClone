@@ -9,6 +9,7 @@ import AdminProducts from "./pages/admin/AdminProducts"
 import AdminCategories from "./pages/admin/AdminCategories"
 import AdminUsers from "./pages/admin/AdminUsers"
 import AdminProtectedRoutes from "./components/AdminRoute"
+import Orders from "./pages/admin/AdminOrder"
 
 function App() {
   return (
@@ -50,6 +51,14 @@ function App() {
             element={
               <AdminProtectedRoutes>
                 <AdminUsers />
+              </AdminProtectedRoutes>
+            }
+          />
+          <Route
+            path="/admin/orders"
+            element={
+              <AdminProtectedRoutes>
+                <Orders />
               </AdminProtectedRoutes>
             }
           />

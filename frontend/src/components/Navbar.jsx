@@ -23,7 +23,7 @@ function Navbar() {
     <header className="navbar">
       <div className="navbar-container">
         <Link to="/" className="logo">
-          <h1>Amazon Clone</h1>
+          <h1>Amazon Clone Website</h1>
         </Link>
 
         <div className="mobile-menu-button" onClick={toggleMobileMenu}>

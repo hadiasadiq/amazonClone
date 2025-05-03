@@ -80,6 +80,13 @@ function AdminDashboard() {
             Manage Users
           </Link>
         </div>
+        <div className="stat-card">
+          <h2>12</h2>
+          <p>Orders</p>
+          <Link to="/admin/orders" className="admin-link">
+            Manage orders
+          </Link>
+        </div>
       </div>
 
       <div className="admin-actions">

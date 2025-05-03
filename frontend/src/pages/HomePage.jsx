@@ -33,7 +33,7 @@ function HomePage() {
             id: 1,
             title: "Summer Collection",
             subtitle: "50% Off Selected Items",
-            image: "/image/banners/newcollection.webp",
+            image: "/image/Banners/b1.jpg",
             link: "/products?category=clothing",
           },
           {

@@ -240,14 +240,14 @@ export const carouselData = [ // banners
     id: 1,
     title: "Summer Collection",
     subtitle: "50% Off Selected Items",
-    image: "/image/banners/newcollection.webp",
+    image: "public/image/Banners/b2.jpg",
     link: "/products?category=clothing",
   },
   {
     id: 2,
     title: "New Electronics",
     subtitle: "Latest Gadgets & Accessories",
-    image: "/image/banners/electronics.jfif",
+    image: "/image/Banners/b3.jpg",
     link: "/products?category=electronics",
   },
   {

@@ -33,7 +33,7 @@ function AdminUsers() {
   const handleToggleAdmin = async (userId) => {
     try {
       const response = await adminAPI.toggleAdminStatus(userId)
-
+      console.log(response.data)
       // Update users list
       setUsers(users.map((u) => (u._id === userId ? response.data.user : u)))
     } catch (err) {
