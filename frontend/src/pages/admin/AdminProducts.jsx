@@ -1,194 +1,183 @@
 "use client"
 
-// Import necessary modules and components
 import { useState, useEffect } from "react"
 import { useAuth } from "../../context/AuthContext"
 import { adminAPI, categoryAPI } from "../../api/axios"
-import "../../styles/admin.css"
+import "../../styles/admin/adminProducts.css"
 
 function AdminProducts() {
-  const { user } = useAuth() // Get the authenticated user from context
-  const [products, setProducts] = useState([]) // State to store products
-  const [categories, setCategories] = useState([]) // State to store categories
-  const [loading, setLoading] = useState(true) // State to manage loading state
-  const [error, setError] = useState("") // State to store error messages
+  const { user } = useAuth()
+  const [products, setProducts] = useState([])
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
 
   // Form state
-  const [showForm, setShowForm] = useState(false) // State to toggle the form visibility
-  const [editingProduct, setEditingProduct] = useState(null) // State to track the product being edited
+  const [showForm, setShowForm] = useState(false)
+  const [editingProduct, setEditingProduct] = useState(null)
   const [formData, setFormData] = useState({
-    name: "", // Product name
-    price: "", // Product price
-    description: "", // Product description
-    category: "", // Product category
-    size:'',
-    featured: false, // Whether the product is featured
-    images: [""], // Array of product image URLs
+    name: "",
+    price: "",
+    description: "",
+    category: "",
+    size: "",
+    featured: false,
+    images: [""],
   })
 
-  // Fetch products and categories when the component mounts or user changes
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true) // Start loading
-        // Fetch products and categories concurrently
+        setLoading(true)
         const [productsRes, categoriesRes] = await Promise.all([
           adminAPI.getAdminProducts(),
           categoryAPI.getAllCategories(),
         ])
 
-        setProducts(productsRes.data.products) // Set fetched products
-        setCategories(categoriesRes.data.categories) // Set fetched categories
+        setProducts(productsRes.data.products)
+        setCategories(categoriesRes.data.categories)
       } catch (err) {
-        setError("Failed to load products data") // Handle errors
+        setError("Failed to load products data")
         console.error(err)
       } finally {
-        setLoading(false) // Stop loading
+        setLoading(false)
       }
     }
 
     if (user && user._id) {
-      fetchData() // Fetch data only if the user is authenticated
+      fetchData()
     }
   }, [user])
 
-  // Handle input changes in the form
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value, // Update form data
+      [name]: type === "checkbox" ? checked : value,
     })
   }
 
-  // Handle changes to image fields
   const handleImageChange = (e, index) => {
     const newImages = [...formData.images]
     newImages[index] = e.target.value
-    setFormData({ ...formData, images: newImages }) // Update images array
+    setFormData({ ...formData, images: newImages })
   }
 
-  // Add a new image field
   const addImageField = () => {
     setFormData({ ...formData, images: [...formData.images, ""] })
   }
 
-  // Remove an image field
   const removeImageField = (index) => {
     const newImages = formData.images.filter((_, i) => i !== index)
     setFormData({ ...formData, images: newImages })
   }
 
-  // Reset the form to its initial state
   const resetForm = () => {
     setFormData({
       name: "",
       price: "",
       description: "",
-      size:'', // change 2
+      size: "",
       category: "",
       featured: false,
       images: [""],
     })
-    setEditingProduct(null) // Clear the editing product
+    setEditingProduct(null)
   }
 
-  // Handle adding a new product
   const handleAddProduct = () => {
-    setShowForm(true) // Show the form
-    resetForm() // Reset the form
+    setShowForm(true)
+    resetForm()
   }
 
-  // Handle editing an existing product
   const handleEditProduct = (product) => {
-    setShowForm(true) // Show the form
-    setEditingProduct(product) // Set the product being edited
+    setShowForm(true)
+    setEditingProduct(product)
     setFormData({
       name: product.name,
       price: product.price,
       description: product.description,
       category: product.category,
-      size: product.size, // change 3
+      size: product.size,
       featured: product.featured,
       images: product.images.length > 0 ? product.images : [""],
     })
   }
 
-  // Handle form submission for adding or editing a product
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
       const productData = {
         ...formData,
-        price: Number.parseFloat(formData.price), // Ensure price is a number
+        price: Number.parseFloat(formData.price),
       }
 
       let response
 
       if (editingProduct) {
-        // Update the product if editing
         response = await adminAPI.updateProduct(editingProduct.id, productData)
-
-        // Update the product in the list
         setProducts(products.map((p) => (p.id === editingProduct.id ? response.data.product : p)))
       } else {
-        // Create a new product
         response = await adminAPI.createProduct(productData)
-
-        // Add the new product to the list
         setProducts([...products, response.data.product])
       }
 
-      setShowForm(false) // Hide the form
-      resetForm() // Reset the form
+      setShowForm(false)
+      resetForm()
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to save product") // Handle errors
+      setError(err.response?.data?.message || "Failed to save product")
       console.error(err)
     }
   }
 
-  // Handle deleting a product
   const handleDeleteProduct = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) {
       return
     }
 
     try {
-      await adminAPI.deleteProduct(id) // Delete the product
-
-      // Remove the product from the list
+      await adminAPI.deleteProduct(id)
       setProducts(products.filter((p) => p.id !== id))
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to delete product") // Handle errors
+      setError(err.response?.data?.message || "Failed to delete product")
       console.error(err)
     }
   }
 
-  // Show a loading message while data is being fetched
   if (loading) {
-    return <div className="admin-container">Loading products...</div>
+    return <div className="admin-products loading">Loading products...</div>
   }
 
   return (
-    <div className="admin-container">
-      {/* Header section */}
-      <div className="admin-header">
-        <h1>Manage Products</h1>
-        <button className="admin-button" onClick={handleAddProduct}>
-          Add New Product
+    <div className="admin-products">
+      <div className="products-header">
+        <h1 className="products-title">Products</h1>
+        <button className="add-product-btn" onClick={handleAddProduct}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Add Product
         </button>
       </div>
 
-      {/* Error message */}
       {error && <div className="error-message">{error}</div>}
 
-      {/* Product form */}
       {showForm && (
-        <div className="admin-form-container">
-          <h2>{editingProduct ? "Edit Product" : "Add New Product"}</h2>
-          <form onSubmit={handleSubmit} className="admin-form">
-            {/* Form fields */}
+        <div className="product-form-container">
+          <h2 className="product-form-title">{editingProduct ? "Edit Product" : "Add New Product"}</h2>
+          <form onSubmit={handleSubmit} className="product-form">
             <div className="form-group">
               <label htmlFor="name">Product Name</label>
               <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required />
@@ -230,17 +219,12 @@ function AdminProducts() {
                 ))}
               </select>
             </div>
+
             <div className="form-group">
-              <label htmlFor="size">size</label>  {/*/ change 4 */}
-              <input
-                type="text"
-                id="size"
-                name="size"
-                value={formData.size}
-                onChange={handleInputChange}
-                required
-              />
+              <label htmlFor="size">Size</label>
+              <input type="text" id="size" name="size" value={formData.size} onChange={handleInputChange} required />
             </div>
+
             <div className="form-group checkbox">
               <input
                 type="checkbox"
@@ -264,17 +248,44 @@ function AdminProducts() {
                   />
                   {formData.images.length > 1 && (
                     <button type="button" className="remove-button" onClick={() => removeImageField(index)}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
                       Remove
                     </button>
                   )}
                 </div>
               ))}
               <button type="button" className="add-button" onClick={addImageField}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
                 Add Another Image
               </button>
             </div>
 
-            {/* Form actions */}
             <div className="form-actions">
               <button type="submit" className="save-button">
                 {editingProduct ? "Update Product" : "Add Product"}
@@ -294,17 +305,16 @@ function AdminProducts() {
         </div>
       )}
 
-      {/* Products table */}
-      <div className="admin-table-container">
-        <table className="admin-table">
+      <div className="products-table-container">
+        <table className="products-table">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Image</th>
               <th>Name</th>
+              <th>Description</th>
               <th>Price</th>
               <th>Category</th>
-              <th>Size</th> {/** change 2 */}
+              <th>Size</th>
               <th>Featured</th>
               <th>Actions</th>
             </tr>
@@ -313,7 +323,6 @@ function AdminProducts() {
             {products.length > 0 ? (
               products.map((product) => (
                 <tr key={product.id}>
-                  <td>{product.id}</td>
                   <td>
                     <img
                       src={product.images[0] || "/placeholder.svg"}
@@ -321,18 +330,57 @@ function AdminProducts() {
                       className="product-thumbnail"
                     />
                   </td>
-                  <td>{product.name}</td>
-                  <td>${product.price.toFixed(2)}</td>
-                  <td>{categories.find((c) => c.id === product.category)?.name || product.category}</td>
-                  <td>{product.size}</td> {/* change 2*/}
-                  <td>{product.featured ? "Yes" : "No"}</td>
+                  <td className="product-name">{product.name}</td>
+                  <td>{product.description.substring(0, 50)}...</td>
+                  <td className="product-price">${product.price.toFixed(2)}</td>
+                  <td>
+                    <span className="product-category">
+                      {categories.find((c) => c.id === product.category)?.name || product.category}
+                    </span>
+                  </td>
+                  <td>{product.size}</td>
+                  <td>
+                    {product.featured ? (
+                      <span className="product-featured">Yes</span>
+                    ) : (
+                      <span className="product-not-featured">No</span>
+                    )}
+                  </td>
                   <td>
                     <div className="action-buttons">
-                      <button className="edit-button" onClick={() => handleEditProduct(product)}>
-                        Edit
+                      <button className="edit-button" onClick={() => handleEditProduct(product)} title="Edit">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
                       </button>
-                      <button className="delete-button" onClick={() => handleDeleteProduct(product.id)}>
-                        Delete
+                      <button className="delete-button" onClick={() => handleDeleteProduct(product.id)} title="Delete">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          <line x1="10" y1="11" x2="10" y2="17"></line>
+                          <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
                       </button>
                     </div>
                   </td>
@@ -340,7 +388,7 @@ function AdminProducts() {
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="no-data">
+                <td colSpan="8" className="no-data">
                   No products found
                 </td>
               </tr>

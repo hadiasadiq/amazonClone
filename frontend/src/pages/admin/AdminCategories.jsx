@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useAuth } from "../../context/AuthContext"
 import { adminAPI } from "../../api/axios"
-import "../../styles/admin.css"
+import "../../styles/admin/adminCategories.css"
 
 function AdminCategories() {
   const { user } = useAuth()
@@ -80,13 +80,9 @@ function AdminCategories() {
 
       if (editingCategory) {
         response = await adminAPI.updateCategory(editingCategory.id, categoryData)
-
-        // Update categories list
         setCategories(categories.map((c) => (c.id === editingCategory.id ? response.data.category : c)))
       } else {
         response = await adminAPI.createCategory(categoryData)
-
-        // Add new category to list
         setCategories([...categories, response.data.category])
       }
 
@@ -105,8 +101,6 @@ function AdminCategories() {
 
     try {
       await adminAPI.deleteCategory(id)
-
-      // Remove category from list
       setCategories(categories.filter((c) => c.id !== id))
     } catch (err) {
       setError(err.response?.data?.message || "Failed to delete category")
@@ -115,24 +109,38 @@ function AdminCategories() {
   }
 
   if (loading) {
-    return <div className="admin-container">Loading categories...</div>
+    return <div className="admin-categories loading">Loading categories...</div>
   }
 
   return (
-    <div className="admin-container">
-      <div className="admin-header">
-        <h1>Manage Categories</h1>
-        <button className="admin-button" onClick={handleAddCategory}>
-          Add New Category
+    <div className="admin-categories">
+      <div className="categories-header">
+        <h1 className="categories-title">Categories</h1>
+        <button className="add-category-btn" onClick={handleAddCategory}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Add Category
         </button>
       </div>
 
       {error && <div className="error-message">{error}</div>}
 
       {showForm && (
-        <div className="admin-form-container">
-          <h2>{editingCategory ? "Edit Category" : "Add New Category"}</h2>
-          <form onSubmit={handleSubmit} className="admin-form">
+        <div className="category-form-container">
+          <h2 className="category-form-title">{editingCategory ? "Edit Category" : "Add New Category"}</h2>
+          <form onSubmit={handleSubmit} className="category-form">
             <div className="form-group">
               <label htmlFor="name">Category Name</label>
               <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required />
@@ -169,8 +177,8 @@ function AdminCategories() {
         </div>
       )}
 
-      <div className="admin-table-container">
-        <table className="admin-table">
+      <div className="categories-table-container">
+        <table className="categories-table">
           <thead>
             <tr>
               <th>ID</th>
@@ -183,7 +191,7 @@ function AdminCategories() {
             {categories.length > 0 ? (
               categories.map((category) => (
                 <tr key={category.id}>
-                  <td>{category.id}</td>
+                  <td className="category-id">{category.id}</td>
                   <td>
                     <img
                       src={category.image || "/placeholder.svg"}
@@ -191,14 +199,46 @@ function AdminCategories() {
                       className="category-thumbnail"
                     />
                   </td>
-                  <td>{category.name}</td>
+                  <td className="category-name">{category.name}</td>
                   <td>
                     <div className="action-buttons">
-                      <button className="edit-button" onClick={() => handleEditCategory(category)}>
-                        Edit
+                      <button className="edit-button" onClick={() => handleEditCategory(category)} title="Edit">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
                       </button>
-                      <button className="delete-button" onClick={() => handleDeleteCategory(category.id)}>
-                        Delete
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDeleteCategory(category.id)}
+                        title="Delete"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          <line x1="10" y1="11" x2="10" y2="17"></line>
+                          <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
                       </button>
                     </div>
                   </td>
