@@ -1,7 +1,7 @@
 .admin-sidebar {
     width: 260px;
     height: 100vh;
-    background-color: #4e1f00;
+    background-color: rgba(19,25,33,255);
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -28,7 +28,7 @@
   .sidebar-title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #feba17;
+    color:white;
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
@@ -38,7 +38,7 @@
   .sidebar-toggle {
     background: transparent;
     border: none;
-    color: #feba17;
+    color: white;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -47,9 +47,10 @@
     border-radius: 4px;
     transition: background-color 0.2s;
   }
-  
+  /*arrow*/
   .sidebar-toggle:hover {
-    background-color: rgba(254, 186, 23, 0.1);
+    background-color: white;
+    color: rgba(19,25,33,255);
   }
   
   .sidebar-content {
@@ -85,8 +86,8 @@
   
   .sidebar-nav a.active {
     background-color: rgba(254, 186, 23, 0.2);
-    color: #feba17;
-    border-left-color: #feba17;
+    color: white;
+    border-left-color: white;
   }
   
   .sidebar-nav a svg {
@@ -117,8 +118,8 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #feba17;
-    color: #4e1f00;
+    background-color:white;
+    color: rgba(19,25,33,255);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -164,7 +165,7 @@
   
   .store-link {
     background-color: rgba(254, 186, 23, 0.1);
-    color: #feba17;
+    color: white;
     text-decoration: none;
   }
   

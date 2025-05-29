@@ -4,12 +4,15 @@ import { useState, useEffect } from "react"
 import { useAuth } from "../../context/AuthContext"
 import { adminAPI } from "../../api/axios"
 import "../../styles/admin/adminUsers.css"
+import EditUserModal from "../../components/admin/EditUserModal"
 
 function AdminUsers() {
   const { user } = useAuth()
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [editingUser, setEditingUser] = useState(null)
+  const [successMessage, setSuccessMessage] = useState("")
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -23,6 +26,7 @@ function AdminUsers() {
       } finally {
         setLoading(false)
       }
+      
     }
 
     if (user && user._id) {
@@ -40,6 +44,71 @@ function AdminUsers() {
     }
   }
 
+  // Count total admins
+  const adminCount = users.filter((u) => u.isAdmin).length
+
+  const handleDeleteUser = async (userId, isAdmin) => {
+    try {
+      // Client-side validation for better UX
+      // Prevent deleting yourself
+      if (userId === user._id) {
+        setError("You cannot delete your own account while logged in.")
+        return
+      }
+
+      // Prevent deleting the last admin
+      if (isAdmin && adminCount <= 1) {
+        setError("Cannot delete the last admin account. Promote another user first.")
+        return
+      }
+
+      if (!window.confirm("Are you sure you want to delete this user? This action cannot be undone.")) {
+        return
+      }
+
+      // Call the API
+      const response = await adminAPI.deleteUser(userId)
+      
+      // On success, update the UI
+      setUsers(users.filter((u) => u._id !== userId))
+      
+      // Clear any previous errors
+      setError("")
+      
+      // Optional: Show success message
+      // setSuccessMessage("User deleted successfully")
+    } catch (err) {
+      // The backend will return appropriate error messages
+      setError(err.response?.data?.message || "Failed to delete user")
+      console.error(err)
+    }
+  }
+
+  const handleEditUser = (user) => {
+    setEditingUser(user)
+  }
+  
+  const handleSaveUser = async (updatedUser) => {
+    try {
+      const response = await adminAPI.updateUser(updatedUser._id, updatedUser)
+      
+      // Update the users list with the updated user
+      setUsers(users.map(u => u._id === updatedUser._id ? response.data.user : u))
+      
+      // Close the modal
+      setEditingUser(null)
+      
+      // Show success message
+      setSuccessMessage("User updated successfully")
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccessMessage(""), 3000)
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to update user")
+      console.error(err)
+    }
+  }
+
   if (loading) {
     return <div className="admin-users loading">Loading users...</div>
   }
@@ -51,6 +120,7 @@ function AdminUsers() {
       </div>
 
       {error && <div className="error-message">{error}</div>}
+      {successMessage && <div className="success-message">{successMessage}</div>}
 
       <div className="users-table-container">
         <table className="users-table">
@@ -60,7 +130,9 @@ function AdminUsers() {
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
-              <th>Actions</th>
+              <th>Admin Action</th>
+              <th>Edit</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -68,67 +140,56 @@ function AdminUsers() {
               users.map((u) => (
                 <tr key={u._id} className={u._id === user._id ? "current-user" : ""}>
                   <td className="user-id">{u._id}</td>
-                  <td className="user-name">{u.name}</td>
+                  <td className="user-name">{u.name} {u.lastName}</td>
                   <td className="user-email">{u.email}</td>
                   <td>
                     <span className={`user-role ${u.isAdmin ? "admin" : "user"}`}>{u.isAdmin ? "Admin" : "User"}</span>
                   </td>
-                  <td>
-                    {u._id !== user._id ? (
-                      <button
-                        className={u.isAdmin ? "demote-button" : "promote-button"}
-                        onClick={() => handleToggleAdmin(u._id)}
-                      >
-                        {u.isAdmin ? (
-                          <>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                              <circle cx="8.5" cy="7" r="4"></circle>
-                              <line x1="23" y1="11" x2="17" y2="11"></line>
-                            </svg>
-                            Remove Admin
-                          </>
-                        ) : (
-                          <>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                              <circle cx="8.5" cy="7" r="4"></circle>
-                              <line x1="20" y1="8" x2="20" y2="14"></line>
-                              <line x1="23" y1="11" x2="17" y2="11"></line>
-                            </svg>
-                            Make Admin
-                          </>
-                        )}
-                      </button>
-                    ) : (
-                      <span className="self-user">Current User</span>
-                    )}
-                  </td>
+                  {u._id !== user._id ? (
+                    <>
+                      <td>
+                        <button
+                          className={u.isAdmin ? "demote-button" : "promote-button"}
+                          onClick={() => handleToggleAdmin(u._id)}
+                        >
+                          {u.isAdmin ? "Remove Admin" : "Make Admin"}
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="edit-button"
+                          onClick={() => handleEditUser(u)}
+                        >
+                          Edit
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="delete-button"
+                          onClick={() => handleDeleteUser(u._id, u.isAdmin)}
+                          disabled={u._id === user._id || (u.isAdmin && adminCount <= 1)}
+                          title={
+                            u._id === user._id 
+                              ? "Cannot delete your own account" 
+                              : u.isAdmin && adminCount <= 1 
+                                ? "Cannot delete the last admin" 
+                                : "Delete this user"
+                          }
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td colSpan={3} className="self-user">Current User</td>
+                    </>
+                  )}
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="no-data">
+                <td colSpan="7" className="no-data">
                   No users found
                 </td>
               </tr>
@@ -136,6 +197,14 @@ function AdminUsers() {
           </tbody>
         </table>
       </div>
+
+      {editingUser && (
+        <EditUserModal
+          user={editingUser}
+          onClose={() => setEditingUser(null)}
+          onSave={handleSaveUser}
+        />
+      )}
     </div>
   )
 }

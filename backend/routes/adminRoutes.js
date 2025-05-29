@@ -225,4 +225,96 @@ router.put("/users/:id/toggle-admin", async (req, res) => {
     res.status(500).json({ message: "Server Error", success: false })
   }
 })
+
+// Delete a user
+router.delete("/users/:id", async (req, res) => {
+  try {
+    const userId = req.params.id
+    const adminId = req.headers["user-id"]
+    
+    // Check if user exists
+    const userToDelete = await User.findById(userId)
+    if (!userToDelete) {
+      return res.status(404).json({ message: "User not found", success: false })
+    }
+    
+    // Prevent self-deletion
+    if (userId === adminId) {
+      return res.status(400).json({ message: "You cannot delete your own account while logged in", success: false })
+    }
+    
+    // Check if this is the last admin
+    if (userToDelete.isAdmin) {
+      const adminCount = await User.countDocuments({ isAdmin: true })
+      if (adminCount <= 1) {
+        return res.status(400).json({ 
+          message: "Cannot delete the last admin account. Promote another user first", 
+          success: false 
+        })
+      }
+    }
+    
+    // Delete the user
+    await User.findByIdAndDelete(userId)
+    
+    res.json({ message: "User deleted successfully", success: true })
+  } catch (err) {
+    console.error("Delete user error:", err)
+    res.status(500).json({ message: "Server Error", success: false })
+  }
+})
+
+// Update user details
+router.put("/users/:id", async (req, res) => {
+  try {
+    const userId = req.params.id
+    const { name, lastName, email, isAdmin } = req.body
+    const adminId = req.headers["user-id"]
+    
+    // Check if user exists
+    const userToUpdate = await User.findById(userId)
+    if (!userToUpdate) {
+      return res.status(404).json({ message: "User not found", success: false })
+    }
+    
+    // Special validation for admin status changes
+    if (userToUpdate.isAdmin && !isAdmin) {
+      // Attempting to remove admin status
+      const adminCount = await User.countDocuments({ isAdmin: true })
+      if (adminCount <= 1) {
+        return res.status(400).json({ 
+          message: "Cannot remove admin status from the last admin user", 
+          success: false 
+        })
+      }
+    }
+    
+    // Update user details
+    userToUpdate.name = name
+    userToUpdate.lastName = lastName
+    userToUpdate.email = email
+    userToUpdate.isAdmin = isAdmin
+    
+    await userToUpdate.save()
+    
+    res.json({ 
+      message: "User updated successfully", 
+      success: true,
+      user: userToUpdate
+    })
+  } catch (err) {
+    console.error("Update user error:", err)
+    
+    // Handle duplicate email error
+    if (err.code === 11000) {
+      return res.status(400).json({ 
+        message: "Email address is already in use", 
+        success: false 
+      })
+    }
+    
+    res.status(500).json({ message: "Server Error", success: false })
+  }
+})
+
 module.exports = router

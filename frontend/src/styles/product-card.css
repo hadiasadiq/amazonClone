@@ -1,6 +1,7 @@
 .product-card {
   position: relative;
-  background-color:light burlywood;
+  background-color: #fff;
+  
   border-radius: 10px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -11,7 +12,7 @@
 
 .product-card:hover {
   transform: translateY(-5px);
-  box-shadow: yellow;
+  box-shadow: white;
 }
 
 .product-link {
@@ -43,7 +44,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color:yellow;
+  background-color:rgb(19, 25, 33);
   color: black;
   font-size: 0.75rem;
   font-weight: 600;
@@ -62,13 +63,13 @@
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color:rgb(77,25,0);
+  color:rgb(19, 25, 33);
 }
 
 .product-price {
   font-size: 1.1rem;
   font-weight: 700;
-  color: rgb(77,25,0);
+  color:rgb(35, 47, 62); /* default dark text */
   margin-bottom: 0.5rem;
 }
 
@@ -84,12 +85,12 @@
 }
 
 .star {
-  color:rgb(77,25,0);
+  color:rgb(19, 25, 33);
   font-size: 1rem;
 }
 
 .star.filled {
-  color: green;
+  color: rgb(35, 47, 62);
 }
 
 .review-count {
@@ -100,8 +101,8 @@
 .add-to-cart-btn {
   width: 100%;
   padding: 0.75rem;
-  background-color: rgb(254,187,16);
-  color:rgb(77,25,0);
+  background-color: rgb(35, 47, 62);
+  color:white;
   border: none;
   border-radius: 0 0 8px 8px;
   font-weight: 500;
@@ -110,6 +111,7 @@
 }
 
 .add-to-cart-btn:hover {
-  background-color: rgb(117,80,41);
+  background-color: rgb(19, 25, 33);
 }
+
 

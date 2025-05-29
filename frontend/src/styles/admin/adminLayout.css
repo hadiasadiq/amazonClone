@@ -1,7 +1,7 @@
 .admin-layout {
     display: flex;
     min-height: 100vh;
-    background-color: #f8f9fa;
+    background-color: rgba(35,47,62,255);
     transition: all 0.3s ease;
   }
   

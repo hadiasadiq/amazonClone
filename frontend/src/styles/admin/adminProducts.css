@@ -13,7 +13,7 @@
   .products-title {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #4e1f00;
+    color:white;
     margin: 0;
   }
   
@@ -21,8 +21,8 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background-color: #feba17;
-    color: #4e1f00;
+    background-color:white;
+    color: rgba(35,47,62,255);
     border: none;
     padding: 0.75rem 1.25rem;
     border-radius: 6px;
@@ -32,7 +32,8 @@
   }
   
   .add-product-btn:hover {
-    background-color: #e5a912;
+    background-color:rgba(19,25,33,255);
+    color: white;
   }
   
   .add-product-btn svg {
@@ -43,7 +44,7 @@
   .products-table-container {
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px whitesmoke;
     overflow: hidden;
   }
   
@@ -62,7 +63,7 @@
   .products-table th {
     background-color: #f8f9fa;
     font-weight: 600;
-    color: #4e1f00;
+    color: rgba(19,25,33,255);
   }
   
   .products-table tr:last-child td {
@@ -70,7 +71,7 @@
   }
   
   .products-table tr:hover td {
-    background-color: #f8f9fa;
+    background-color: lightslategray;
   }
   
   .product-thumbnail {
@@ -82,7 +83,7 @@
   
   .product-name {
     font-weight: 600;
-    color: #4e1f00;
+    color: rgba(19,25,33,255);
   }
   
   .product-price {
@@ -93,8 +94,8 @@
   .product-category {
     display: inline-block;
     padding: 0.25rem 0.5rem;
-    background-color: rgba(254, 186, 23, 0.1);
-    color: #feba17;
+    /*background-color: rgba(254, 186, 23, 0.1);*/
+    color: rgba(19,25,33,255);
     border-radius: 4px;
     font-size: 0.875rem;
   }
@@ -164,7 +165,7 @@
   .product-form-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #4e1f00;
+    color: rgba(19,25,33,255);
     margin-bottom: 1.5rem;
   }
   

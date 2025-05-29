@@ -96,6 +96,7 @@ function AdminProducts() {
     setFormData({
       name: product.name,
       price: product.price,
+      //age: product.age,// age put in product//
       description: product.description,
       category: product.category,
       size: product.size,
@@ -196,6 +197,8 @@ function AdminProducts() {
                 required
               />
             </div>
+           
+            {/* age lie same upr wala paste */}
 
             <div className="form-group">
               <label htmlFor="description">Description</label>
@@ -313,6 +316,7 @@ function AdminProducts() {
               <th>Name</th>
               <th>Description</th>
               <th>Price</th>
+              {/* <th>Age</th> */}
               <th>Category</th>
               <th>Size</th>
               <th>Featured</th>

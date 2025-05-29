@@ -61,6 +61,8 @@ export const adminAPI = {
   // Admin users ke liye
   getUsers: () => API.get("/admin/users"), // Saare users lene ke liye
   toggleAdminStatus: (id) => API.put(`/admin/users/${id}/toggle-admin`), // User ka admin status toggle karne ke liye
+  deleteUser: (id) => API.delete(`/admin/users/${id}`), // User delete karne ke liye
+  updateUser: (userId, userData) => API.put(`/admin/users/${userId}`, userData), // User update karne ke liye
 }
 
 export default API // API instance ko export karte hain

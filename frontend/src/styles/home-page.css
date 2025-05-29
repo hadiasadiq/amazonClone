@@ -11,9 +11,11 @@
   flex-direction: column;
   padding: 3rem 0;
 }
+/*heading colour*/
 .section h2{
   font-size: 2.5rem;
   margin-bottom: 2rem;
+  color:rgb(19, 25, 33);
 }
 
 .categories-grid {
@@ -23,7 +25,7 @@
 }
 
 .category-button {
-  background:rgb(254,187,16);
+  background:rgb(35, 47, 62);
   border: none;
   padding: 0.75rem 1.5rem;
   cursor: pointer;
@@ -32,12 +34,12 @@
 }
 
 .category-button:hover {
-  background: rgb(254,187,16);
+  background: rgb(19, 25, 33);
 }
 
 .category-button.active {
-  background: rgb(117,80,41);
-  color: rgb(254,187,16);
+  background: rgb(19, 25, 33);
+  color:rgb(35, 47, 62);
   transform: scale(1.05);
 }
 
@@ -45,11 +47,13 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
+  
 }
 
 .product-card {
   padding: 1rem;
-  border: 1px solid rgb(117,80,41);
+  border: 1px solid rgb(35, 47, 62);
+  
   text-align: center;
 }
 
@@ -93,13 +97,13 @@
   color: green;
   margin-top: 1rem;
 }
-
+/*promo banner means session arrival*/
 .promo-banner {
   background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/image/3.avif");
   background-size: cover;
   background-position: center;
   padding: 4rem 0;
-  color: rgb(254,187,16);
+  color: rgb(35, 47, 62);
 }
 
 .promo-content {
@@ -111,15 +115,17 @@
 .promo-content h2 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
+  color: white;
 }
 
 .promo-content p {
   font-size: 1.25rem;
   margin-bottom: 1.5rem;
+  color: white;
 }
 
 .newsletter-section {
-  background-color: rgb(254,187,16);
+  background-color: rgb(35, 47, 62);
 }
 
 .newsletter-content {
@@ -131,6 +137,7 @@
 .newsletter-content h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
+  color: white;
 }
 
 .newsletter-content p {
@@ -145,7 +152,7 @@
 .newsletter-form input {
   flex: 1;
   padding: 0.75rem 1rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid white ;
   border-radius: 4px;
 }
 

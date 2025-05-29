@@ -67,7 +67,7 @@ function Navbar() {
         <div className="nav-icons">
           {user ? (
             <>
-              <span className="user-name">Hi, {user.name}</span>
+              <span className="user-name">Assalam-o-alaikum, {user.name}</span>
               <button className="logout-button" onClick={handleLogout}>
                 Logout
               </button>

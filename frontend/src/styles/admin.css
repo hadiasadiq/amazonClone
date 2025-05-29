@@ -14,12 +14,12 @@
   
   .admin-header h1 {
     font-size: 2rem;
-    color: rgb(77, 25, 0);
+    color: rgba(35,47,62,255);
   }
   
   .admin-button {
-    background-color: rgb(254, 187, 16);
-    color: rgb(77, 25, 0);
+    background-color: rgba(35,47,62,255);
+    color: red;
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 4px;
@@ -33,12 +33,13 @@
   
   .admin-button:hover {
     background-color: rgb(117, 80, 41);
-    color: rgb(254, 187, 16);
+    color: red;
   }
   
   .admin-button svg {
     width: 18px;
     height: 18px;
+    color: red;
   }
   
   /* Stats Cards */
@@ -78,7 +79,7 @@
   
   .admin-link {
     display: inline-block;
-    color: rgb(254, 187, 16);
+    color: red;
     background-color: rgb(77, 25, 0);
     padding: 0.5rem 1rem;
     border-radius: 4px;

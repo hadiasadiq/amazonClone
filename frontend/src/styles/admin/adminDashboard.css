@@ -14,18 +14,18 @@
   .dashboard-title {
     font-size: 2rem;
     font-weight: 700;
-    color: #4e1f00;
+    color: rgba(35,47,62,255);
     margin: 0;
   }
   
   .dashboard-welcome {
     font-size: 1rem;
-    color: #6c757d;
+    color: white;
   }
   
   .dashboard-date {
     font-size: 0.875rem;
-    color: #6c757d;
+    color: white;
   }
   
   .stats-grid {
@@ -66,7 +66,7 @@
   
   .card-icon.products {
     background-color: rgba(254, 186, 23, 0.1);
-    color: #feba17;
+    color: rgba(35,47,62,255);
   }
   
   .card-icon.categories {
@@ -86,7 +86,7 @@
   
   .card-title {
     font-size: 0.875rem;
-    color: #6c757d;
+    color:rgba(19,25,33,255);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin: 0;
@@ -95,20 +95,20 @@
   .card-value {
     font-size: 2rem;
     font-weight: 700;
-    color: #4e1f00;
+    color: rgba(35,47,62,255);
     margin: 0.5rem 0;
   }
   
   .card-link {
     display: inline-block;
-    color: #feba17;
+    color: rgba(35,47,62,255);
     font-weight: 500;
     text-decoration: none;
     transition: color 0.2s;
   }
   
   .card-link:hover {
-    color: #4e1f00;
+    color: green;
   }
   
   .dashboard-section {
@@ -125,7 +125,7 @@
   .section-title {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #4e1f00;
+    color: rgba(35,47,62,255);
     margin: 0;
   }
   
@@ -161,14 +161,14 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 1rem;
-    background-color: rgba(254, 186, 23, 0.1);
-    color: #feba17;
+    background-color: rgba(35,47,62,255);
+    color: white;
   }
   
   .action-title {
     font-size: 1rem;
     font-weight: 600;
-    color: #4e1f00;
+    color:rgba(35,47,62,255);
     margin-bottom: 0.5rem;
   }
   

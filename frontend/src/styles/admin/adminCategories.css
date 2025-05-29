@@ -13,7 +13,7 @@
   .categories-title {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #4e1f00;
+    color: white;
     margin: 0;
   }
   
@@ -21,8 +21,8 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background-color: #feba17;
-    color: #4e1f00;
+    background-color: white;
+    color: rgba(19,25,33,255);
     border: none;
     padding: 0.75rem 1.25rem;
     border-radius: 6px;
@@ -32,7 +32,8 @@
   }
   
   .add-category-btn:hover {
-    background-color: #e5a912;
+    background-color: rgba(19,25,33,255);
+    color: white;
   }
   
   .add-category-btn svg {
@@ -62,7 +63,7 @@
   .categories-table th {
     background-color: #f8f9fa;
     font-weight: 600;
-    color: #4e1f00;
+    color: rgba(19,25,33,255);
   }
   
   .categories-table tr:last-child td {
@@ -82,7 +83,8 @@
   
   .category-name {
     font-weight: 600;
-    color: #4e1f00;
+    color: rgba(19,25,33,255);
+    
   }
   
   .category-id {
@@ -137,7 +139,7 @@
   .category-form-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #4e1f00;
+    color: rgba(19,25,33,255);
     margin-bottom: 1.5rem;
   }
   
@@ -153,12 +155,12 @@
   
   .form-group label {
     font-weight: 500;
-    color: #4e1f00;
+    color: rgba(19,25,33,255);
   }
   
   .form-group input {
     padding: 0.75rem;
-    border: 1px solid #ced4da;
+    border: 1px solid rgba(19,25,33,255);
     border-radius: 6px;
     font-size: 1rem;
     transition: border-color 0.2s;
@@ -166,7 +168,7 @@
   
   .form-group input:focus {
     outline: none;
-    border-color: #feba17;
+    border-color: rgba(19,25,33,255);
   }
   
   .form-actions {
@@ -186,21 +188,23 @@
   }
   
   .save-button {
-    background-color: #feba17;
-    color: #4e1f00;
+    background-color: rgba(19,25,33,255);
+    color: white;
   }
   
   .save-button:hover {
-    background-color: #e5a912;
+    background-color: white;
+    color: rgba(19,25,33,255);
   }
   
   .cancel-button {
-    background-color: #f8f9fa;
-    color: #6c757d;
+    background-color: rgba(19,25,33,255);
+    color: white;
   }
   
   .cancel-button:hover {
     background-color: #e9ecef;
+    color: rgba(19,25,33,255);
   }
   
   .error-message {

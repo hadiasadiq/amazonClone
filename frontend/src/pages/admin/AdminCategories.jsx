@@ -145,6 +145,7 @@ function AdminCategories() {
               <label htmlFor="name">Category Name</label>
               <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required />
             </div>
+            
 
             <div className="form-group">
               <label htmlFor="image">Image URL</label>
@@ -200,6 +201,7 @@ function AdminCategories() {
                     />
                   </td>
                   <td className="category-name">{category.name}</td>
+
                   <td>
                     <div className="action-buttons">
                       <button className="edit-button" onClick={() => handleEditCategory(category)} title="Edit">

@@ -1,5 +1,5 @@
 .footer {
-  background-color: rgb(254,187,16);
+  background-color: rgb(35, 47, 62);
   padding: 3rem 0 0;
   margin-top: 3rem;
 }
@@ -16,7 +16,7 @@
 .footer-section h3 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: rgb(77,25,0);
+  color: white;
   margin-bottom: 1rem;
 }
 
@@ -27,7 +27,7 @@
 }
 
 .footer-section p {
-  color: rgb(77,25,0);
+  color: white;
   margin-bottom: 1.5rem;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .footer-section ul a {
-  color:black;
+  color:white;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -60,8 +60,8 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color:rgb(117,80,41);
-  color: rgb(254,187,16);
+  background-color:rgb(19, 25, 33);
+  color: white;
   transition: all 0.2s ease;
 }
 
@@ -74,11 +74,11 @@
   text-align: center;
   padding: 1.5rem 0;
   margin-top: 3rem;
-  border-top: 1px solid peru;
+  border-top: 1px solid white;
 }
 
 .footer-bottom p {
-  color: rgb(77,25,0);
+  color: white;
   margin: 0;
 }
 
